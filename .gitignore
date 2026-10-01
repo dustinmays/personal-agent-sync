@@ -1,0 +1,25 @@
+# Secrets and local credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*token*
+*credentials*
+auth.json
+
+# Hermes runtime/user data — never synchronize these
+MEMORY.md
+USER.md
+memories/
+sessions/
+logs/
+state.db*
+hermes_state.db*
+response_store.db*
+
+# Local/editor/OS artifacts
+.DS_Store
+.idea/
+.vscode/
+*.swp

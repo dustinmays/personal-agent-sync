@@ -10,5 +10,6 @@
 - None.
 
 ## Recently completed
+- 2026-10-02 — Added a generalized, read-only project-drift-review experiment for cooperating Hermes gateways; automatic synchronization remains out of scope.
 - 2026-10-01 — Added a sanitized, reviewed operating note for a capacity-aware calendar/task/workspace pilot; no credentials, identifiers, or environment-local state included.
 - Initial repository structure and sharing safeguards established.

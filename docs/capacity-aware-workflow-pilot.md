@@ -70,7 +70,7 @@ Use a task-manager project only for active multi-step work or a real ongoing are
 4. For waiting/follow-up work, make the next contact or review explicit. Apply `@waiting` only when it is useful.
 5. Treat task-manager and calendar access as environment-local. Each Hermes agent must establish and verify its own authorization; never share credentials or assume a container token is accessible elsewhere.
 6. Do not silently mutate external task/calendar records. Make writes only with the user's explicit authorization, then read back the changed record.
-7. Do not build reconciliation automation yet. A later read-mostly skill may report probable mismatches—an active initiative with no next action, a stale waiting item, or an orphaned task project—and draft changes for approval.
+7. Do not build automatic reconciliation. A read-only drift-review experiment may report probable mismatches—an active initiative with no next action, a stale waiting item, or an orphaned task project—and draft changes for approval. Its portable contract is in [Read-Only Project Drift Review V1](read-only-project-drift-review-v1.md).
 
 ## Trial evaluation
 

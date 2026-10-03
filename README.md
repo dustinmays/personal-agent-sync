@@ -11,6 +11,7 @@ Share **general methods, verified tool behavior, and portable skills**—not tra
 - `learnings/`: concise, reviewed notes with evidence and limits.
 - `skills/`: portable Hermes skills ready for a human to review and copy/install into an agent.
 - `docs/sharing-protocol.md`: how to propose, review, and consume learnings.
+- `docs/repository-structure-v1-for-independent-gateway.md`: how a separate gateway can receive and use the portable repository-structure skill.
 - `templates/learning.md`: starting format for a learning note.
 
 Do not add `MEMORY.md`, `USER.md`, session exports, logs, or profile backups. This is not a shared Hermes home and does not automatically sync either agent's memory.

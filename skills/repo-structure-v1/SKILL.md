@@ -1,76 +1,87 @@
 ---
 name: repo-structure-v1
 description: Use when creating or maintaining a software repository.
-version: 0.2.0
-author: Dustin Mays, Hermes Agent
+version: 0.3.0
+author: Hermes Agent
 license: MIT
 platforms: [linux, macos, windows]
 metadata:
   hermes:
-    tags: [repositories, templates, scaffolding, coding, agents, delivery]
+    tags: [repositories, prototypes, templates, scaffolding, coding, agents]
     related_skills: [project-structure-v1, test-driven-development]
 ---
 # Repository Structure V1
 
-Use this skill for runnable or versioned software: applications, APIs, CLIs, TUIs, libraries, and automations with their own build, test, version-control, or release lifecycle. It is adaptable guidance, not a mandatory scaffold or a reason to reorganize an established repository.
+Use this skill for runnable or versioned software: applications, APIs, CLIs, libraries, automations, and prototype monorepos. It is adaptable guidance, not a migration mandate for established repositories.
 
 ## Route before creating
 
-1. **Classify the primary residue.** Runnable/versioned software belongs in a repository. Long-duration work whose durable residue is decisions, research, or status belongs in a project workspace. A one-off task needs neither root.
-2. **Look for an existing owner.** Continue an existing repository when it owns the same deliverable. Do not create a near-duplicate merely to start fresh.
-3. **Apply the hybrid rule.** When a project needs real software, use a separate repository and link them lightly: the project explains why; the repository points to its owning project or initiative. Project context does not hold product code, and the repository does not duplicate outcome-level tracking.
+1. **Classify the primary residue.** Runnable/versioned software belongs in a repository. Long-duration decisions, research, and outcome status belong in a project workspace. A one-off task needs neither root.
+2. **Look for an existing owner.** Continue the repository that owns the deliverable; do not create a near-duplicate merely to start fresh.
+3. **Apply the hybrid rule.** When a project needs software, link the project and repository lightly: the project explains why; the repository points back to the owning project or initiative. The project does not hold product code, and the repository does not duplicate outcome-level tracking.
 
-Shortcut: if abandoning the work next week leaves a codebase to clone and run, it is a repository. If it leaves a body of notes and decisions, it is a project.
+If abandoning the work next week leaves a codebase to clone and run, it is a repository. If it leaves a body of notes and decisions, it is a project workspace.
 
-## Smallest useful repository shape
+## Select the smallest fitting route
 
-Start with the repository's existing `AGENTS.md`, `README.md`, and local instructions. Preserve its conventions. A new or newly structured repository normally needs only:
-
-```text
-repository/
-├── AGENTS.md             # Short purpose, canonical commands, map to deeper context
-├── README.md             # Purpose, setup, run/verify instructions, links
-├── STATE.md              # Concise current lifecycle index when sustained work warrants it
-├── <source and tests>    # Language/framework-specific layout
-└── <canonical commands>  # Package scripts, Makefile targets, or equivalent
-```
-
-Add nested `AGENTS.md` files only where folder-specific rules materially help. Add a workstream status log or `deferred/` notes only for sustained implementation work. Avoid empty folders, speculative initiatives, and generic everything-templates.
+- **Single application, service, CLI, or library:** use one focused repository with its ecosystem-appropriate layout.
+- **Rapid-iteration prototype monorepo:** when one project or initiative needs several small, related experiments, use one repository with independently runnable `prototypes/<name>/` directories rather than one repository per experiment.
 
 ## Universal conventions
 
-- Keep root `AGENTS.md` minimal and actionable. A compatibility `CLAUDE.md` may point to it; do not rewrite a repository just for uniformity.
-- Expose one canonical command interface appropriate to the ecosystem. CI calls project commands rather than hand-written raw invocations.
-- Pin language and toolchain versions with ecosystem-appropriate files.
-- Distinguish fast local checks from browser, service, container, or other dependent checks. Name unavailable checks explicitly; never hide a red test behind a green aggregate command.
-- Keep templates thin: include a working tracer behavior, a focused behavior test or conformance check, and a documented replacement boundary.
-- Use proportionate verification. Simple or non-production work benefits from focused behavior checks plus build/lint/static checks; exhaustive TDD loops are reserved for higher-risk or more complex change.
-- If a repository tracks its own delivery lifecycle, use `STATE.md` as a concise current index, append-only workstream `status.md` files for history, and one small note per independent deferred item. Do not duplicate parent-project outcome tracking.
+- Read existing `AGENTS.md`, `README.md`, and local instructions before changing a repository.
+- Keep root `AGENTS.md` short: purpose, canonical commands, routing, and shared guardrails. Use short nested `AGENTS.md` files only for material local rules; do not repeat root guidance.
+- A compatibility `CLAUDE.md` may point to `AGENTS.md` when useful.
+- Expose one canonical command interface appropriate to the ecosystem. CI calls project commands, not ad-hoc raw invocations.
+- Pin language and toolchain versions with ecosystem-appropriate files. Keep fast checks distinct from dependent browser/service/container checks.
+- Use proportionate verification: focused behavior tests plus formatter/linter/build checks for simple prototypes; deeper testing when risk warrants it.
+- A repository may track code-level delivery with concise `STATE.md`, append-only workstream `status.md`, and small independent `deferred/` notes. Do not duplicate parent-project lifecycle tracking.
+
+## Rapid-iteration prototype monorepo
+
+Use this structure when repeated experiments share project context and collaboration rules but may need separate dependencies or architecture:
+
+```text
+prototype-monorepo/
+├── AGENTS.md                 # Short routing and shared guardrails
+├── README.md
+├── STATE.md                  # Repository-level implementation state
+├── docs/                     # Shared, evidence-backed implementation lessons
+├── scripts/                  # Shared helpers
+├── mise.toml                 # Optional root task entry points
+└── prototypes/
+    ├── _template/            # Copy-only starter; not an active experiment
+    └── experiment-name/
+        ├── AGENTS.md         # Short local instructions
+        ├── README.md
+        ├── <local tooling>
+        ├── src/
+        ├── tests/
+        ├── data/             # Synthetic/sample only
+        └── docs/
+```
+
+- Keep the root at the routing/policy level: shared safe-data boundary, shared tooling, cross-prototype lessons, and concise repository state.
+- Each prototype owns short local guidance, isolated dependencies, tests, sample-data policy, and scoped docs.
+- Start experiments by copying `_template`; do not use the template itself as an experiment.
+- Do not force shared runtime dependencies or architecture on unrelated experiments.
+- Define a safe-data boundary before experiments begin. Unless explicitly approved otherwise, use synthetic or fabricated fixtures and exclude credentials, personal data, production data, and contract-sensitive artifacts.
 
 ## Creation and maintenance procedure
 
-1. Confirm the intended repository location exists and is writable. Do not create it in a project workspace or an unmounted lookalike path.
-2. Inspect existing repositories and local guidance. Choose an existing template only when it fits; otherwise create the smallest purpose-built repository and record why.
-3. Add the minimal repository context, canonical commands, runnable behavior, and focused verification path before declaring the route usable.
-4. Initialize local Git when appropriate. Do not create a remote, alter hosting settings, or publish unless the user explicitly asks.
-5. When linked to a project, add only a thin bidirectional link and update the project's initiative status at the appropriate milestone.
-6. Before reporting completion, run the canonical fast check plus a suitable build/run smoke test. Report unavailable optional tooling or checks plainly.
-
-## Portable gateway handoff
-
-When another independently operated Hermes gateway needs this guidance, distribute a reviewed portable copy instead of copying profiles or memory.
-
-- Publish the skill as `skills/repo-structure-v1/SKILL.md` in a reviewed exchange repository, with a companion implementation note in `docs/`.
-- Keep the copy generalized. Never include raw memory, user profiles, transcripts, credentials, private endpoints, private repository URLs, or environment-local paths.
-- The receiving gateway pulls and reviews the diff, then either trusts the repository-owned skill with `hermes skills trust <repo-path>` or copies the reviewed directory into its own `$HERMES_HOME/skills/` tree. Local adaptations remain local unless they later meet the sharing boundary.
-- Do not create automatic two-way profile or memory synchronization. Version control and deliberate review are the exchange mechanism.
+1. Confirm the intended repository location exists and is writable.
+2. Inspect existing repositories and instructions. Choose an existing template only when it fits; otherwise create the smallest purpose-built repository.
+3. For multiple related experiments, create the prototype-monorepo root and a copy-only template before adding a runnable prototype.
+4. Add minimal context, canonical commands, runnable behavior, and a focused verification path before declaring a route usable.
+5. Initialize local Git when appropriate. Do not create a remote, alter hosting settings, or publish unless explicitly asked.
+6. Add a thin project/repository link only when both are real. Update the project at the appropriate milestone.
 
 ## Verification
 
 Before reporting a repository route as usable, verify:
 
 - The work belongs in a repository and any project linkage is documented.
-- README, root guidance, state/history conventions, and canonical commands agree.
-- The minimal runnable behavior can be built or run in the available environment.
-- The fast verification command actually succeeds, and any unavailable optional checks are disclosed.
+- README, root and scoped guidance, state/history conventions, and commands agree.
+- For a prototype monorepo, the root routes to a copy-only template and every runnable prototype is independently documented, tested, and bounded by the shared safe-data policy.
+- The fast verification command and an appropriate smoke check actually succeed; disclose unavailable optional checks.
 - Git status is clean except for intentional, reported changes.
